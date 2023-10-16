@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Przeciągnij i upuść miniaturki zdjęć</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         #drop-area {
             border: 2px dashed #ccc;
@@ -31,12 +30,14 @@
         .thumbnail {
             width: 90px;
             height: 90px;
+            position: relative;
         }
 
         .delete-button {
-            margin-top: 5px;
             cursor: pointer;
-            color: red;
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
         }
     </style>
 </head>
@@ -90,7 +91,7 @@
 
                     const deleteButton = document.createElement('span');
                     deleteButton.classList.add('delete-button');
-                    deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                    deleteButton.innerHTML = '<i class="fas fa-trash"></i>'; // Użyj "fas" zamiast "fa"
                     deleteButton.addEventListener('click', () => {
                         imageContainer.removeChild(thumbnailContainer);
                     });
@@ -99,14 +100,12 @@
                     thumbnailContainer.appendChild(deleteButton);
 
                     imageContainer.appendChild(thumbnailContainer);
-
-                    // Prevent the file input click event from propagating
-                    deleteButton.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                    });
                 }
             }
         }
     </script>
+
+    <!-- Dodaj bibliotekę Font Awesome -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>
