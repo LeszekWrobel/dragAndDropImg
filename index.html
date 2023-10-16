@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Przeciągnij i upuść miniaturki zdjęć</title>
+    <style>
+            #drop-area {
+            border: 2px dashed #ccc;
+            width: 400px;
+            text-align: center;
+            padding: 5px;
+            font-size: 20px;
+            margin: 0 auto;
+        }
+
+        #image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .thumbnail {
+            width: 90px;
+            height: 90px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="drop-area">
+        Przeciągnij i upuść miniaturki zdjęć tutaj lub kliknij, aby wybrać pliki.
+        <input type="file" id="fileInput" multiple style="display: none;">
+
+        <div id="image-container"></div>
+
+    </div>
+    
+
+    <script>
+        const dropArea = document.getElementById('drop-area');
+        const imageContainer = document.getElementById('image-container');
+        const fileInput = document.getElementById('fileInput');
+
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.style.border = '2px dashed #000';
+        });
+
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.style.border = '2px dashed #ccc';
+        });
+
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.style.border = '2px dashed #ccc';
+
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            handleFiles(files);
+        });
+        // add img by click
+        dropArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        function handleFiles(files) {
+            for (const file of files) {
+                if (file.type.startsWith('image/')) {
+                    const thumbnail = document.createElement('img');
+                    thumbnail.classList.add('thumbnail');
+                    thumbnail.src = URL.createObjectURL(file);
+                    imageContainer.appendChild(thumbnail);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
