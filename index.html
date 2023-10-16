@@ -45,6 +45,22 @@
             color: red;
             cursor: pointer;
         }
+
+        #error-message {
+            color: red;
+            display: none;
+            padding: 10px;
+            border: 1px solid red;
+            margin-top: 10px;
+        }
+
+        #confirm-button {
+            display: none;
+            background-color: #007bff;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -52,16 +68,24 @@
         Przeciągnij i upuść miniaturki zdjęć tutaj lub kliknij, aby wybrać pliki.
         <input type="file" id="fileInput" multiple style="display: none">
         <div id="image-container"></div>
+        <p id="error-message">
+            Plik "<span id="error-file-name"></span>" nie jest obrazem. Proszę wybrać inny plik.
+            <span id="confirm-button">OK</span>
+        </p>
     </div>
 
     <script>
         const dropArea = document.getElementById('drop-area');
         const imageContainer = document.getElementById('image-container');
         const fileInput = document.getElementById('fileInput');
+        const errorMessage = document.getElementById('error-message');
+        const errorFileName = document.getElementById('error-file-name');
+        const confirmButton = document.getElementById('confirm-button');
 
         dropArea.addEventListener('dragover', (e) => {
             e.preventDefault();
             dropArea.style.border = '2px dashed #000';
+            hideErrorMessage();
         });
 
         dropArea.addEventListener('dragleave', () => {
@@ -98,7 +122,7 @@
                     const deleteButton = document.createElement('span');
                     deleteButton.classList.add('delete-button');
                     deleteButton.addEventListener('click', (e) => {
-                        e.stopPropagation(); // Zapobiegamy otwarciu okna wyboru pliku
+                        e.stopPropagation();
                         imageContainer.removeChild(thumbnailContainer);
                     });
 
@@ -106,8 +130,23 @@
                     thumbnailContainer.appendChild(deleteButton);
 
                     imageContainer.appendChild(thumbnailContainer);
+                } else {
+                    displayErrorMessage(file.name);
                 }
             }
+        }
+
+        function displayErrorMessage(fileName) {
+            errorMessage.style.display = 'block';
+            errorFileName.textContent = fileName;
+            confirmButton.style.display = 'block';
+            confirmButton.addEventListener('click', hideErrorMessage);
+        }
+
+        function hideErrorMessage() {
+            errorMessage.style.display = 'none';
+            errorFileName.textContent = '';
+            confirmButton.style.display = 'none';
         }
     </script>
 </body>
